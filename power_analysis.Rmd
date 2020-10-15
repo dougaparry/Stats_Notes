@@ -143,7 +143,6 @@ u = numerator degrees of freedom (number of coefficients in the model, minus the
 v = denominator degrees of freedom (number of error degrees: v = n - u - 1)
 
 Therefore: n = v + u + 1
-
 The effect size f^2 = R2/(1 - R^2)
 
 Example, expect R^2 of 0.3 what sample size do we need with 2 coefficients in the model
@@ -159,6 +158,7 @@ lm_power <- pwr.f2.test(u = 2,
 lm_power
 ```
 
+To get the sample size from the above:
 ```{r}
 n <- lm_power$v + lm_power$u + 1
 n
