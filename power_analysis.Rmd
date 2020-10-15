@@ -3,7 +3,8 @@ title: "Power Analysis using R"
 output: html_notebook
 ---
 
-An a priori power analysis is important for determining the required sample size for a study. A power analysis involves four variables, any three of which can be used to determine the fourth:
+An a priori power analysis is important for determining the required sample size for a study. 
+A power analysis involves four variables, any three of which can be used to determine the fourth:
 
 1. the sample size
 2. the effect size
@@ -14,7 +15,8 @@ Reminder:
 Type I error = false positive
 Type II error = false negative
 
-Typically, we are interested in determining the sample size needed for a study. To get this we can use the other three variables in our power analysis.
+Typically, we are interested in determining the sample size needed for a study. 
+To get this we can use the other three variables in our power analysis.
 
 Two packages are useful for this purpose
 
@@ -161,10 +163,4 @@ lm_power
 n <- lm_power$v + lm_power$u + 1
 n
 ```
-
-
-
-
-
-
 
