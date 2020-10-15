@@ -1,0 +1,170 @@
+---
+title: "Power Analysis using R"
+output: html_notebook
+---
+
+An a priori power analysis is important for determining the required sample size for a study. A power analysis involves four variables, any three of which can be used to determine the fourth:
+
+1. the sample size
+2. the effect size
+3. the significance level (the probability of making a type I error)
+4. the statistical power (one minus the probability of making a Type II error)
+
+Reminder:
+Type I error = false positive
+Type II error = false negative
+
+Typically, we are interested in determining the sample size needed for a study. To get this we can use the other three variables in our power analysis.
+
+Two packages are useful for this purpose
+
+```{r}
+library(pwr)
+library(TOSTER)
+```
+
+For two of the three variables, specifying the desired values is straightforward. In the behavioral sciences we normally target 80% power (0.80) and, while there is much debate, we typically set the statistical significance level at 5% (0.05).
+
+In contrast to these two, setting the effect size is more challenging. Several options are available to base the effect size on:
+
+- a pilot study (can be very biased so not recommended)
+- a previous study in the literature (may also be biased)
+- a meta-analysis (some bias but generally a good option)
+- conventions in your field
+- average effect sizes observed in your field
+- Cohen's general conventions
+- the smallest effect size of interest
+
+The last option, while likely resulting in needing a larger sample size, will lead to the most robust results.
+
+Power your studies to be able to detect the small effect size of interest (the smallest effects that you would consider to be practically meaningful). For example, if you consider correlations smaller than r = 0.1 to be meaningless, than you need to power your study to be able to detect all effects larger than r = 0.1 (alternatively phrased, you need to be able to detect all effects as small as r = 0.1). Importantly, the smallest effect you would consider meaningful needs to be based on something. This will depend on your field.
+
+If powering your studies based on the SESOI is not feasible, than either a previous meta-analysis or field-specific conventions are recommended.
+
+Either way, this process should be recorded (with supporting evidence) and reported in your study (with a link to the code for the analysis)
+
+#### Power analysis for Correlations ####
+
+(targeting field-specific conventions)
+
+## Power analysis for a correlation (two-tailed)
+i.e., "there is an association but no direction is specified"
+```{r}
+ES_size <- 0.2
+
+r_power_two_sided <- pwr.r.test(r = ES_size,
+                      sig.level = 0.05,
+                      power = 0.80)
+r_power_two_sided
+```
+
+## Plot to indicate how power changes as a function of sample size
+```{r}
+plot(r_power_two_sided)
+```
+
+## Power analysis for a correlation (one-tailed) 
+i.e., directional hypothesis "there is a positive association"
+```{r}
+ES_size <- 0.2
+
+r_power_one_sided <- pwr.r.test(r = ES_size,
+                      sig.level = 0.05,
+                      power = 0.80,
+                      alternative = "greater") #greater is for
+r_power_one_sided
+```
+
+## Plot to indicate how power changes as a function of sample size
+```{r}
+plot(r_power_one_sided)
+```
+# Power analysis with eqivalence testing (based on a SESOI)
+
+## power for correlations with equivalence testing
+```{r}
+correlation_TOST_power <- powerTOSTr(alpha = 0.05,
+                                     statistical_power = 0.80,
+                                     low_eqbound_r = 0.1,
+                                     high_eqbound_r = 0.1)
+
+correlation_TOST_power
+```
+
+#### Power analysis for t-tests ####
+
+## power analysis for non-directional hypothesis 
+i.e., there is a difference but not specified which group is greater
+```{r}
+ES_size <-0.3
+
+t_power_two_sided <- pwr.t.test(d = ES_size,
+                      sig.level = 0.05,
+                      power = 0.80,
+                      type = "two.sample", #independent samples t-test (2 independent groups)
+                      alternative = "two.sided")
+
+t_power_two_sided
+```
+
+## power analysis for directional hypothesis 
+i.e., group X will be greater than group Y
+```{r}
+ES_size <-0.3
+
+t_power_two_sided <- pwr.t.test(d = ES_size,
+                      sig.level = 0.05,
+                      power = 0.80,
+                      type = "two.sample",
+                      alternative = "greater")
+
+t_power_two_sided
+```
+
+#### Power analysis for ANOVA ####
+
+## one-way anova
+```{r}
+ES_size <- 0.2
+
+anova_power <- pwr.anova.test(k = 4, #number of groups
+                              f = ES_size,
+                              sig.level = 0.05,
+                              power = 0.80)
+
+anova_power
+```
+
+#### Power analysis for linear models (i.e., multiple regression) ####
+
+u = numerator degrees of freedom (number of coefficients in the model, minus the intercept)
+v = denominator degrees of freedom (number of error degrees: v = n - u - 1)
+
+Therefore: n = v + u + 1
+
+The effect size f^2 = R2/(1 - R^2)
+
+Example, expect R^2 of 0.3 what sample size do we need with 2 coefficients in the model
+```{r}
+R2 = 0.3
+f2 <- R2/(1-R2)
+
+lm_power <- pwr.f2.test(u = 2,
+            f2 =f2,
+            sig.level = 0.05,
+            power = 0.80)
+
+lm_power
+```
+
+```{r}
+n <- lm_power$v + lm_power$u + 1
+n
+```
+
+
+
+
+
+
+
