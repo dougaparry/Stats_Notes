@@ -52,9 +52,9 @@ Either way, this process should be recorded (with supporting evidence) and repor
 ## Power analysis for a correlation (two-tailed)
 i.e., "there is an association but no direction is specified"
 ```{r}
-ES_size <- 0.2
+effect_size <- 0.2 #specify as needed
 
-r_power_two_sided <- pwr.r.test(r = ES_size,
+r_power_two_sided <- pwr.r.test(r = effect_size,
                       sig.level = 0.05,
                       power = 0.80)
 r_power_two_sided
@@ -68,9 +68,9 @@ plot(r_power_two_sided)
 ## Power analysis for a correlation (one-tailed) 
 i.e., directional hypothesis "there is a positive association"
 ```{r}
-ES_size <- 0.2
+effect_size <- 0.2 #specify as needed
 
-r_power_one_sided <- pwr.r.test(r = ES_size,
+r_power_one_sided <- pwr.r.test(r = effect_size,
                       sig.level = 0.05,
                       power = 0.80,
                       alternative = "greater") #greater is for
@@ -98,9 +98,9 @@ correlation_TOST_power
 ## power analysis for non-directional hypothesis 
 i.e., there is a difference but not specified which group is greater
 ```{r}
-ES_size <-0.3
+effect_size <-0.3 #specify as needed
 
-t_power_two_sided <- pwr.t.test(d = ES_size,
+t_power_two_sided <- pwr.t.test(d = effect_size,
                       sig.level = 0.05,
                       power = 0.80,
                       type = "two.sample", #independent samples t-test (2 independent groups)
@@ -112,9 +112,9 @@ t_power_two_sided
 ## power analysis for directional hypothesis 
 i.e., group X will be greater than group Y
 ```{r}
-ES_size <-0.3
+effect_size <-0.3 #specify as needed
 
-t_power_two_sided <- pwr.t.test(d = ES_size,
+t_power_two_sided <- pwr.t.test(d = effect_size,
                       sig.level = 0.05,
                       power = 0.80,
                       type = "two.sample",
@@ -127,10 +127,10 @@ t_power_two_sided
 
 ## one-way anova
 ```{r}
-ES_size <- 0.2
+effect_size <- 0.2 #specify as needed
 
 anova_power <- pwr.anova.test(k = 4, #number of groups
-                              f = ES_size,
+                              f = effect_size,
                               sig.level = 0.05,
                               power = 0.80)
 
@@ -147,10 +147,10 @@ The effect size f^2 = R2/(1 - R^2)
 
 Example, expect R^2 of 0.3 what sample size do we need with 2 coefficients in the model
 ```{r}
-R2 = 0.3
+R2 = 0.3 #specify as needed
 f2 <- R2/(1-R2)
 
-lm_power <- pwr.f2.test(u = 2,
+lm_power <- pwr.f2.test(u = 2, #specify as needed
             f2 =f2,
             sig.level = 0.05,
             power = 0.80)
